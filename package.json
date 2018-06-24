@@ -1,0 +1,28 @@
+{
+    "name": "git-to-es",
+    "version": "1.0.0",
+    "description": "git to es (github/bitbucket)",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yogeshyadav108098/git-to-es.git"
+    },
+    "author": "Yogesh Yadav",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/yogeshyadav108098/git-to-es/issues"
+    },
+    "homepage": "https://github.com/yogeshyadav108098/git-to-es#readme",
+    "dependencies": {
+        "elasticsearch": "^15.0.0",
+        "eslint": "^4.19.1",
+        "eslint-config-google": "^0.9.1",
+        "lodash": "^4.17.10",
+        "moment": "^2.22.2",
+        "nodegit": "^0.22.1",
+        "uuid-logger": "^1.1.2"
+    }
+}
