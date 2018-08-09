@@ -5,8 +5,7 @@ const Promise = require('bluebird');
 // Internal
 const LibEs = require('./lib/es');
 const LibGit = require('./lib/git');
-const Logger = require('./lib/logger');
-const LibUtils = require('./lib/utils')();
+const LibUtils = require('./lib/utils');
 const GitConfig = require('./config/git');
 const ResponseCodes = require('./helpers/responseCode');
 
@@ -33,16 +32,6 @@ class GitToEs {
         if (!index || !type) {
             throw LibUtils.genError(
                 'No ES index, type provided',
-                ResponseCodes.PRECONDITION_FAILED.status,
-                ResponseCodes.PRECONDITION_FAILED.code
-            );
-        }
-
-        self.logger = _.get(options, 'logger', Logger);
-        // Logger should support basic functions
-        if (!self.logger.debug || !self.logger.info || !self.logger.error || !self.logger.warn) {
-            throw LibUtils.genError(
-                'Logger does not support basoc functions (debug,info,warn,error)',
                 ResponseCodes.PRECONDITION_FAILED.status,
                 ResponseCodes.PRECONDITION_FAILED.code
             );
@@ -79,14 +68,14 @@ class GitToEs {
             client: esClient,
             index: index,
             type: type,
-            logger: self.logger
+            logger: console
         });
 
         self.gitRepo = new LibGit({
             origin: origin,
             remoteGitRepo: remoteGitRepo,
             workingDirPath: workingDirPath,
-            logger: self.logger
+            logger: console
         });
 
         self.initiated = false;

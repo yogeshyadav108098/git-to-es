@@ -6,23 +6,18 @@ const Promise = require('bluebird');
 // Internal
 const GitConfig = require('../config/git');
 
-let logger;
 const allowedOrigins = GitConfig.allowedOrigins;
 
 class GitRepo {
     constructor(options) {
         let self = this;
         self.origin = _.get(options, 'origin');
-        self.logger = _.get(options, 'logger');
         self.remoteGitRepo = _.get(options, 'remoteGitRepo');
         self.workingDirPath = _.get(options, 'workingDirPath');
-
-        logger = self.logger;
     }
 
     init() {
         let self = this;
-        self.logger.debug('Initiating git');
 
         return new Promise(function (resolve, reject) {
 
@@ -37,28 +32,26 @@ class GitRepo {
 
             Promise.all(promiseArray)
                 .then(resolve)
-                .error(error => reject(error))
+                .catch(error => reject(error))
         });
     }
 
     getHistory() {
         let self = this;
-        self.logger.debug('Getting History');
 
         return new Promise(function (resolve, reject) {
-
             NodeGit.Repository.open(self.workingDirPath)
                 .then(repo => repo.getMasterCommit())
                 .then(firstCommitOnMaster => firstCommitOnMaster.history(NodeGit.Revwalk.SORT.TIME))
                 .then(history => getHistoryList(history))
                 .then(historyList => resolve(historyList))
-                .done();
+                .catch((error) => reject(error));
         });
     }
 
     getTags() {
         let self = this;
-        self.logger.debug('Getting Tags');
+        console.log('Getting Tags');
 
         let repo;
         return new Promise(function (resolve, reject) {
@@ -77,7 +70,7 @@ class GitRepo {
                 .then(() => repo.getReferenceNames(NodeGit.Reference.TYPE.LISTALL))
                 .then(referenceNames => getTagsList(repo, referenceNames))
                 .then(tagsList => resolve(tagsList))
-                .done();
+                .catch((error) => reject(error));
         });
     }
 }
@@ -86,7 +79,9 @@ const getTagsList = (repo, referenceNames) => {
     let promiseArray = [];
     let tagsList = [];
 
+    cinsole.log(referenceNames);
     referenceNames.forEach((referenceName) => {
+        console.log(referenceName);
         promiseArray.push(
             repo.getReference(referenceName)
                 .then(reference => {

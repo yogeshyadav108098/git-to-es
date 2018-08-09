@@ -11,11 +11,4 @@ class Utils {
     }
 }
 
-let utilsInstance;
-module.exports = function () {
-    if (!utilsInstance) {
-        utilsInstance = new Utils();
-    }
-
-    return utilsInstance;
-};
+module.exports = new Utils();
