@@ -112,7 +112,7 @@ class GitToEs {
     pushTags() {
         let self = this;
         if (!self.initiated) {
-            return Promise.reject('Please initiate GitToEs, before using');
+            return Promise.reject(LibUtils.genError('Please initiate GitToEs, before using'));
         }
 
         return new Promise((resolve, reject) => {

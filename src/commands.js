@@ -7,9 +7,9 @@ const Program = require('commander');
 const Commands = require('./commands/index.js');
 
 Program
-    .command('push <infoType>')
+    .command('push')
     .description('Push info to ES')
-    .option("-h, --hosts <hosts>", "Es hosts List")
+    .option("-h, --hosts <hosts>", "Es hosts List (127.0.0.1:9200,127.0.0.1:9300)")
     .option("-r, --repoName <repoName>", "Repo Name")
     .option("-o, --origin <origin>", "Origin type (local/remote)")
     .option("-w, --workingDirPath <workingDirPath>", "Working directory path")
@@ -21,10 +21,10 @@ Program
     .command('*')
     .description('Unsupported command')
     .action(() => {
-        console.error(
+        console.log(
             Chalk.bold.red(
-                'Invalid command: %s\nSee --help for a list of available commands.',
-                Program.args.join(' ')
+                'Invalid command: ' + Program.args.slice(0, Program.args.length - 1).join(' ') +
+                '\nSee --help for a list of available commands.'
             )
         );
         process.exit(0);

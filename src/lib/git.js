@@ -51,22 +51,28 @@ class GitRepo {
 
     getTags() {
         let self = this;
-        console.log('Getting Tags');
 
         let repo;
+        let debug = 0;
         return new Promise(function (resolve, reject) {
             NodeGit.Repository.open(self.workingDirPath)
-                .then(result => {
-                    repo = result;
-                    return Promise.resolve(repo);
+                .then((result) => {
+                    return Promise.resolve(result);
                 })
-                .then(repo => repo.fetchAll({
+                .then(repo => repo.fetch('origin', {
                     callbacks: {
                         credentials: function (url, userName) {
+                            if (debug++ > 10) return Promise.reject("Authentication agent not loaded.");
                             return NodeGit.Cred.sshKeyFromAgent(userName);
+                        },
+                        certificateCheck: () => {
+                            return 1;
                         }
                     }
                 }, true))
+                .then(() => {
+                    return Promise.resolve();
+                })
                 .then(() => repo.getReferenceNames(NodeGit.Reference.TYPE.LISTALL))
                 .then(referenceNames => getTagsList(repo, referenceNames))
                 .then(tagsList => resolve(tagsList))
@@ -79,7 +85,8 @@ const getTagsList = (repo, referenceNames) => {
     let promiseArray = [];
     let tagsList = [];
 
-    cinsole.log(referenceNames);
+    console.log('Reached here');
+    console.log(referenceNames);
     referenceNames.forEach((referenceName) => {
         console.log(referenceName);
         promiseArray.push(

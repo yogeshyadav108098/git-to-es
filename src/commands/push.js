@@ -38,6 +38,7 @@ class Push extends Base {
 
                     switch (infoToPush) {
                         case 'commits':
+                            console.log('Here');
                             return gitToEs.pushCommits();
                             break;
                         case 'tags':

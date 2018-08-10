@@ -1,11 +1,11 @@
 'use strict';
 
-const Chalk = require('chalk');
 const Es = require('elasticsearch');
 const Promise = require('bluebird');
 
 const GitToEs = require('../index');
 const LibUtils = require('../lib/utils');
+const ResponseCodes = require('../helpers/responseCode');
 
 /*
     Base Command
@@ -15,6 +15,17 @@ class Base {
     constructor() { }
 
     getEsClient(hosts) {
+
+        if (!hosts) {
+            return Promise.reject(
+                LibUtils.genError(
+                    'Es hosts not provided',
+                    ResponseCodes.PRECONDITION_FAILED.status,
+                    ResponseCodes.PRECONDITION_FAILED.code
+                )
+            );
+        }
+
         hosts = hosts.split(',');
         hosts = hosts.map((host) => {
             let hostSplit = host.split(':');
@@ -42,14 +53,20 @@ class Base {
     getGitToEsClient(options) {
         let repoName = options.repoName;
         if (!repoName) {
-            console.log(Chalk.bold.red(LibUtils.genError('Provide repo name')));
-            process.exit(1);
+            throw LibUtils.genError(
+                'Repo name not provided',
+                ResponseCodes.PRECONDITION_FAILED.status,
+                ResponseCodes.PRECONDITION_FAILED.code
+            );
         }
 
         let origin = options.origin;
         if (!origin) {
-            console.log(Chalk.bold.red(LibUtils.genError('Provide origin (local/remote)')));
-            process.exit(1);
+            throw LibUtils.genError(
+                'Origin not provided',
+                ResponseCodes.PRECONDITION_FAILED.status,
+                ResponseCodes.PRECONDITION_FAILED.code
+            );
         }
 
         let originPath;
@@ -60,8 +77,11 @@ class Base {
             case 'remote':
                 break;
             default:
-                console.log(Chalk.bold.red(LibUtils.genError('Given origin is not supported, supported are (local,remove)')));
-                process.exit(1);
+                throw LibUtils.genError(
+                    'Given origin is not supported, supported are (local,remove)',
+                    ResponseCodes.PRECONDITION_FAILED.status,
+                    ResponseCodes.PRECONDITION_FAILED.code
+                );
                 break;
         }
 
@@ -74,7 +94,6 @@ class Base {
             },
             origin,
             workingDirPath: originPath
-            // workingDirPath: '/Users/yogesh.yadav/Downloads/PersonalSpace/Work/Code/Paytm/Gold-And-Loans-Bangalore/wealthmgmt'
         });
     }
 }
