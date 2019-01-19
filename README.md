@@ -1,15 +1,16 @@
-# Git Info To ES
-> Bash command and node library to push git info to ES for better visualization.
+![Git On Kibana](assets/gitOnKibana.png?raw=true "Git On Kibana")
+
+# Git Info On Kibana
+> Bash command and node library to push git info to Kibana for better visualization.
 
 ## Preface ##
-In normal scenarios, its difficult to analyze git data, this command and library aims to make it easily as it pushes the data to es where dashboards can be created easily.
+In normal scenarios, its difficult to analyze git data, this command and library aims to make it easily as it pushes the data to es where dashboards can be created easily. We can better visualise who is contributing how much to the project. And how the processes are being followed
 
 ## Features ##
 1. Push commits to Es.
 2. Push Tags to Es.
 3. Works as both command line or as a node library.
-
-## Beautify your git Info ##
+4. Visualise using Kibana Dashboards.
 
 ### Create dashboards: ###
 ![Dashboard-1](assets/dashboard-1.png?raw=true "Dashboard-1")
