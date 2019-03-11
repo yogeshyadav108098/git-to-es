@@ -61,6 +61,7 @@ typings/
 .next
 
 # Project
+
 package-lock.json
 
 .DS_Store
